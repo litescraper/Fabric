@@ -739,6 +739,7 @@ Application Options:
   -q, --scrape_question=            Search question using Jina AI
       --serply_search=              Search Google using Serply and send the results to chat
       --firecrawl_search=           Search the web using Firecrawl and send the top pages to chat as Markdown
+      --litescrape_search=          Search the web using Litescrape (titles, URLs, snippets)
   -e, --seed=                       Seed to be used for LMM generation
   -w, --wipecontext=                Wipe context
   -W, --wipesession=                Wipe session
@@ -791,6 +792,26 @@ Application Options:
 Help Options:
   -h, --help                        Show this help message
 ```
+
+### Optional Litescrape Search
+
+Configure the optional Litescrape plugin with `fabric --setup`, or set
+`LITESCRAPE_API_KEY` and optionally `LITESCRAPE_BASE_URL` in the process
+environment or Fabric's existing `.env` configuration. The base URL defaults
+to `https://api.litescrape.com`. This integration uses the native
+`GET /api/google/search` API with bearer authentication.
+Base URLs use Fabric's existing endpoint validation, including HTTPS,
+loopback HTTP, and the explicit `FABRIC_ALLOW_INSECURE_LAN` opt-in.
+
+```bash
+fabric --litescrape_search "renewable energy research"
+fabric --litescrape_search "renewable energy research" -p summarize
+```
+
+This command sends the query to Litescrape and returns titles, URLs, and
+snippets. It does not scrape full pages. Existing `--serply_search`,
+`--firecrawl_search`, Jina scraping, and model-native `--search` remain unchanged.
+A standalone search prints a clear message when no results are returned.
 
 ### Debug Levels
 

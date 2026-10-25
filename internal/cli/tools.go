@@ -123,6 +123,18 @@ func handleToolProcessing(currentFlags *Flags, registry *core.PluginRegistry) (m
 		}
 	}
 
+	if currentFlags.LitescrapeSearch != "" {
+		var results string
+		if results, err = registry.Litescrape.Search(currentFlags.LitescrapeSearch); err != nil {
+			return
+		}
+		messageTools = AppendMessage(messageTools, results)
+		if !currentFlags.IsChatRequest() {
+			err = currentFlags.WriteOutput(messageTools)
+			return
+		}
+	}
+
 	if currentFlags.Spotify != "" {
 		if !registry.Spotify.IsConfigured() {
 			err = errors.New(i18n.T("spotify_not_configured"))
