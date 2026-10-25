@@ -739,6 +739,7 @@ Application Options:
   -q, --scrape_question=            Search question using Jina AI
       --serply_search=              Search Google using Serply and send the results to chat
       --firecrawl_search=           Search the web using Firecrawl and send the top pages to chat as Markdown
+      --serper_search=              Search the web using a Serper-compatible provider (titles, URLs, snippets)
   -e, --seed=                       Seed to be used for LMM generation
   -w, --wipecontext=                Wipe context
   -W, --wipesession=                Wipe session
@@ -791,6 +792,27 @@ Application Options:
 Help Options:
   -h, --help                        Show this help message
 ```
+
+### Optional Serper-Compatible Search
+
+Configure the optional Serper plugin with `fabric --setup`, or set
+`SERPER_API_KEY` and optionally `SERPER_BASE_URL` in the process environment
+or Fabric's existing `.env` configuration. The base URL defaults to
+`https://google.serper.dev`; omit the `/search` path.
+Base URLs use Fabric's existing endpoint validation, including HTTPS,
+loopback HTTP, and the explicit `FABRIC_ALLOW_INSECURE_LAN` opt-in.
+
+Support any Serper.dev-compatible endpoint (like litescrape.com, serpbase.dev, serpensapi.org, and others)
+
+```bash
+fabric --serper_search "renewable energy research"
+fabric --serper_search "renewable energy research" -p summarize
+```
+
+This command sends the query to the selected provider and returns titles,
+URLs, and snippets. It does not scrape full pages. Existing `--serply_search`,
+`--firecrawl_search`, Jina scraping, and model-native `--search` remain unchanged.
+A standalone search prints a clear message when no results are returned.
 
 ### Debug Levels
 
